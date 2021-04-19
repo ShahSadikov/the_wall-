@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <title>Wall</title>
+</head>
+<body>
+    <div id="wrapper">
+        <div class="container2">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand">The Wall</a>
+                <form action="/user/logout" class="form-inline">
+                    <p class="navbar-brand">Welcome {{logged_user.first_name}} </p> 
+                    <a href="/user/logout"></a><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log out</button></a>
+                </form>
+            </nav>
+            <div class="row">
+                <div class="col">
+                    <!-- VALIDATOR MESSAGES -->
+                    {% if messages %}
+                        <ul class="messages">    
+                            {% for message in messages %}    
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    <div> <!-- USER POST MESSAGE FORM -->
+                        <form action="/user/post_message" method="POST" class="form-group">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="post_message"><strong>Post a message</strong></label>
+                                <textarea class="form-control" rows="3" name="post_message"></textarea>
+                                <button class="btn btn-primary mt-3">Post a message</button> 
+                            </div>
+                        </form>
+                    </div>
+
+                    <div> <!-- USER MESSAGE DISPLAY -->
+                        {% for post in wall_messages reversed %}
+                        <div class="post">
+                            <p>{{post.message}}</p>
+                            <p class="by">By: {{post.posted_by.first_name}} {{post.posted_by.last_name}} - {{post.created_at}}</p>
+                        </div>
+                          
+                        <div class="comment"> 
+                            {% for comment in post.post_comments.all reversed %}
+                            <div class="comments"> <!-- USER COMMENTS DISPLAY -->
+                                <p>{{comment.comment}}</p>
+                                <p>By: {{comment.posted_by.first_name}} {{comment.posted_by.last_name}}</p>
+                                {% if comment.posted_by.id == request.session.logged_user %}
+                                <div class="row">
+                                        <a href="/comment/{{comment.id}}/edit"><button class="btn_edit btn-outline-info btn-sm">Edit comment</button></a>
+                                        <form action="/comment/{{comment.id}}/delete" method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn_delete btn-outline-danger btn-sm">Delete comment</button>
+                                        </form>
+                                </div>
+                                
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+
+                            <!-- USER COMMENT FORM -->
+                            <form action="/user/post_comment/{{post.id}}" method="POST" class="form-group">
+                                {% csrf_token %}
+                                <div class="form-group_comment col-10">
+                                    <label for="post_comment"><strong>Post a comment</strong></label>
+                                    <textarea class="form-control" rows="3" name="post_comment"></textarea>
+                                    <button class="btn btn-secondary mt-3">Post a comment</button>   
+                                </div>      
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

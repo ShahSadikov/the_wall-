@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#wrapper{
+    width: 1000px;
+    margin: 0px auto;
+    background-color: aliceblue;
+}
+.the_wall{
+    color: blue;
+}
+.the_wall_subtitle span{
+    color: blue;
+}
+.col{
+    padding: 40px;
+}
+.navbar{
+    border: 1px solid black;
+}
+.navbar-brand{
+    margin-top: 10px;
+}
+.blue{
+    color: blue;
+}
+.red{
+    color: red;
+}
+.post{
+    padding: 10px;
+}
+.post p{
+    margin: 2px;
+}
+.form-group_comment{
+    margin-left: 80px;
+}
+
+.comments{
+    margin-left: 80px;
+    padding: 10px;
+}
+.comments p{
+    margin: 2px;
+}
+.btn_edit{
+    display: inline-block;
+    margin-left: 20px;
+}
+.btn_delete{
+    display: inline-block;
+    margin-left: 5px;
+}

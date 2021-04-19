@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <title>Wall</title>
+</head>
+<body>
+    <div id="wrapper">
+        <div class="container2">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand">The Wall</a>
+                <form action="/user/logout" class="form-inline">
+                    <p class="navbar-brand">Welcome {{logged_user.first_name}} </p> 
+                    <a href="/user/logout"></a><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log out</button></a>
+                </form>
+            </nav>
+            <div class="row">
+                <div class="col">
+                    <!-- VALIDATOR MESSAGES -->
+                    {% if messages %}
+                        <ul class="messages">    
+                            {% for message in messages %}    
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <div class="comment"> 
+                        <!-- USER COMMENT UPDATE FORM -->
+                        <form action="/user/update_comment/{{edit_comment.id}}" method="POST" class="form-group">
+                            {% csrf_token %}
+                            <div class="form-group_comment col-10">
+                                <label for="post_comment"><strong>Post a comment</strong></label>
+                                <textarea class="form-control" rows="3" name="post_comment">{{edit_comment.comment}}</textarea>
+                                <button class="btn btn-danger mt-3">Update comment</button>   
+                            </div>      
+                        </form>
+                        <a href="/wall">Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
